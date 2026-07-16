@@ -117,52 +117,284 @@ jQuery.noConflict();
         window.print();
     }
 
+
+
+    //topbar Menu accessibility start
+
+    jQuery('#accessibility > ul').attr('role', 'menubar')
+    jQuery('#accessibility > ul > li').attr('role', 'none')
+    jQuery('#accessibility > ul > li > a, #accessibility > ul > li > button').attr('role', 'menuitem').attr('tabindex', '0')
+    jQuery('#accessibility > ul > li  a, #accessibility > ul > li  button').attr('tabindex', '0')
+    jQuery('#accessibility > ul > li .socialIcons').attr('role', 'menu')
+    jQuery('#accessibility > ul > li .socialIcons li').attr('role', 'none')
+    jQuery('#accessibility > ul > li .socialIcons li a').attr('role', 'menuitem')
+    jQuery('#accessibility > ul > li .goiSearch').attr('role', 'application')
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuItems = document.querySelectorAll('#accessibilityMenu > li > a, #accessibilityMenu > li > button, #accessibilityMenu > li button.bhashini-dropdown-btn');
+        let lastFocusedItem = null;
+
+        menuItems.forEach((item, index) => {
+            const submenu = item.nextElementSibling;
+
+            const activateSubmenu = function(e) {
+                const isAnchor = item.tagName.toLowerCase() === 'a';
+                const hasSubmenu = submenu !== null;
+
+                if (e.type === 'keydown' && (e.key === 'Enter' || e.key === ' ')) {
+                    e.preventDefault();
+                    lastFocusedItem = item;
+                    if (hasSubmenu) {
+                        toggleSubmenu(item, submenu);
+                    } else if (isAnchor && item.href) {
+                        window.location.href = item.href;
+                    }
+                } else if (e.type === 'click' || e.type === 'touchend') {
+                    if (hasSubmenu) {
+                        e.preventDefault();
+                        toggleSubmenu(item, submenu);
+                    } else if (isAnchor && item.href) {
+                        return;
+                    }
+                }
+            };
+
+            item.addEventListener('keydown', function(e) {
+                activateSubmenu(e);
+
+
+                if (e.key === 'ArrowDown') {
+                    if (submenu) {
+                        e.preventDefault();
+
+                        // Open submenu if not already open
+                        if (submenu.getAttribute('aria-hidden') !== 'false') {
+                            openSubmenu(item, submenu);
+                        }
+
+                        // Focus first focusable submenu item
+                        const focusableSelector =
+                            'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+                        const focusableItems = Array.from(
+                            submenu.querySelectorAll(focusableSelector)
+                        ).filter(el => !el.disabled && el.offsetParent !== null);
+
+                        if (focusableItems.length > 0) {
+                            focusableItems[0].focus();
+                        }
+                    }
+                    return;
+                }
+
+
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const nextIndex = (index + 1) % menuItems.length;
+                    menuItems[nextIndex].focus();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const prevIndex = (index - 1 + menuItems.length) % menuItems.length;
+                    menuItems[prevIndex].focus();
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    menuItems[0].focus();
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    menuItems[menuItems.length - 1].focus();
+                }
+            });
+
+            item.addEventListener('click', activateSubmenu);
+            item.addEventListener('touchend', activateSubmenu);
+
+            if (submenu) {
+                const focusableSelector = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+                submenu.addEventListener('keydown', function(e) {
+                    const focusableElements = Array.from(submenu.querySelectorAll(focusableSelector)).filter(el => !el.disabled && el.offsetParent !== null);
+                    if (focusableElements.length === 0) return;
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+
+                    const currentIndex = focusableElements.indexOf(document.activeElement);
+
+                    if (e.key === 'Tab') {
+                        if (e.shiftKey) {
+                            if (document.activeElement === firstElement) {
+                                e.preventDefault();
+                                lastElement.focus();
+                            }
+                        } else {
+                            if (document.activeElement === lastElement) {
+                                e.preventDefault();
+                                firstElement.focus();
+                            }
+                        }
+                    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const next = currentIndex + 1 < focusableElements.length ? focusableElements[currentIndex + 1] : firstElement;
+                        next.focus();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prev = currentIndex - 1 >= 0 ? focusableElements[currentIndex - 1] : lastElement;
+                        prev.focus();
+                    } else if (e.key === 'Escape') {
+                        closeSubmenu(item, submenu);
+                        if (lastFocusedItem) lastFocusedItem.focus();
+                    }
+                });
+
+                submenu.addEventListener('focusout', function(e) {
+                    if (!submenu.contains(e.relatedTarget) && e.relatedTarget !== item) {
+                        closeSubmenu(item, submenu);
+                    }
+                });
+            }
+
+            // item.addEventListener('focus', function () {
+            //   lastFocusedItem = item;
+            //   if (submenu && submenu.getAttribute('aria-hidden') === 'false') {
+            //     closeSubmenu(item, submenu);
+            //   }
+            // });
+            item.addEventListener('focus', function() {
+                lastFocusedItem = item;
+                // Do not auto-close here — let user control via Esc or blur
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            let isClickInsideMenu = false;
+
+            menuItems.forEach(item => {
+                const submenu = item.nextElementSibling;
+                if (item.contains(e.target) || (submenu && submenu.contains(e.target))) {
+                    isClickInsideMenu = true;
+                }
+            });
+
+            if (!isClickInsideMenu) {
+                menuItems.forEach(item => {
+                    const submenu = item.nextElementSibling;
+                    if (submenu && submenu.getAttribute('aria-hidden') === 'false') {
+                        closeSubmenu(item, submenu);
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('touchend', function(e) {
+            let isTouchInsideMenu = false;
+
+            menuItems.forEach(item => {
+                const submenu = item.nextElementSibling;
+                if (item.contains(e.target) || (submenu && submenu.contains(e.target))) {
+                    isTouchInsideMenu = true;
+                }
+            });
+
+            if (!isTouchInsideMenu) {
+                menuItems.forEach(item => {
+                    const submenu = item.nextElementSibling;
+                    if (submenu && submenu.getAttribute('aria-hidden') === 'false') {
+                        closeSubmenu(item, submenu);
+                    }
+                });
+            }
+        });
+
+        function toggleSubmenu(item, submenu) {
+            const isOpen = submenu.getAttribute('aria-hidden') === 'false';
+            if (isOpen) {
+                closeSubmenu(item, submenu);
+            } else {
+                openSubmenu(item, submenu);
+            }
+        }
+
+        function openSubmenu(item, submenu) {
+            submenu.style.opacity = '1';
+            submenu.style.visibility = 'visible';
+            submenu.style.display = 'block';
+            submenu.setAttribute('aria-hidden', 'false');
+            item.setAttribute('aria-expanded', 'true');
+
+        }
+
+        function closeSubmenu(item, submenu) {
+            submenu.style.opacity = '';
+            submenu.style.visibility = '';
+            submenu.style.display = '';
+            submenu.setAttribute('aria-hidden', 'true');
+            item.setAttribute('aria-expanded', 'false');
+        }
+
+        //By pressing ESC key close any open submenu
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                menuItems.forEach(item => {
+                    const submenu = item.nextElementSibling;
+                    if (submenu && submenu.getAttribute('aria-hidden') === 'false') {
+                        closeSubmenu(item, submenu);
+                        if (item) item.focus();
+                    }
+                });
+            }
+        });
+
+    });
+
+    //topbar Menu accessibility ends
+
+
     //Keyboard accessing functions
 
-    function addFocusClass() {
-        jQuery("#accessibility")
-            .find("li")
-            .each(function(index, element) {
-                jQuery(this)
-                    .children("a")
-                    .focus(function(e) {
-                        jQuery(this).parent("li").addClass("mFocus");
-                    });
-            });
-        jQuery("#accessibilityMenu>li>a").focusin(function(e) {
-            jQuery("#accessibilityMenu")
-                .find("li")
-                .each(function(index, element) {
-                    jQuery(this).removeClass("mFocus");
-                });
-            jQuery(this).addClass("mFocus");
-        });
+    // function addFocusClass() {
+    //     jQuery("#accessibility")
+    //         .find("li")
+    //         .each(function (index, element) {
+    //             jQuery(this)
+    //                 .children("a")
+    //                 .focus(function (e) {
+    //                     jQuery(this).parent("li").addClass("mFocus");
+    //                 });
+    //         });
+    //     jQuery("#accessibilityMenu>li>a").focusin(function (e) {
+    //         jQuery("#accessibilityMenu")
+    //             .find("li")
+    //             .each(function (index, element) {
+    //                 jQuery(this).removeClass("mFocus");
+    //             });
+    //         jQuery(this).addClass("mFocus");
+    //     });
 
 
-        jQuery("#accessibilityMenu>li>a").click(function(e) {
-            jQuery(this).addClass("focus");
-            jQuery(this).next("ul").addClass("visible");
-        });
+    //     jQuery("#accessibilityMenu>li>a").click(function (e) {
+    //         jQuery(this).addClass("focus");
+    //         jQuery(this).next("ul").addClass("visible");
+    //     });
 
-        jQuery("#accessibilityMenu>li:last-child ul li:last-child").focusout(
-            function(e) {
-                jQuery("#accessibilityMenu>li:last-child").removeClass("mFocus");
-            }
-        );
+    //     jQuery("#accessibilityMenu>li:last-child ul li:last-child").focusout(
+    //         function (e) {
+    //             jQuery("#accessibilityMenu>li:last-child").removeClass("mFocus");
+    //         }
+    //     );
 
-        jQuery("html").click(function(e) {
-            if (
-                e.target.id == "accessibilityMenu" ||
-                jQuery(e.target).parents("#accessibilityMenu").length > 0
-            ) {} else {
-                jQuery(".goiSearch").removeClass("visible").attr("style", "");
-                jQuery("#accessibilityMenu>li").each(function(index, element) {
-                    jQuery(this).removeClass("mFocus");
-                    jQuery(this).children("a").removeClass("focus");
-                });
-            }
-        });
-    }
+    //     jQuery("html").click(function (e) {
+    //         if (
+    //             e.target.id == "accessibilityMenu" ||
+    //             jQuery(e.target).parents("#accessibilityMenu").length > 0
+    //         ) { } else {
+    //             jQuery(".goiSearch").removeClass("visible").attr("style", "");
+    //             jQuery("#accessibilityMenu>li").each(function (index, element) {
+    //                 jQuery(this).removeClass("mFocus");
+    //                 jQuery(this).children("a").removeClass("focus");
+    //             });
+    //         }
+    //     });
+    // }
 
     jQuery(document).ready(function(e) {
         jQuery("a[href='#top']").click(function() {
@@ -217,7 +449,7 @@ jQuery.noConflict();
 
         jQuery("#footerScrollbar").flexslider({
             animation: "slide",
-            animationLoop: false,
+            animationLoop: true,
             controlNav: false,
             itemWidth: 200,
             itemMargin: 10,
@@ -225,7 +457,7 @@ jQuery.noConflict();
 
         jQuery("#footerScrollbar2").flexslider({
             animation: "slide",
-            animationLoop: false,
+            animationLoop: true,
             controlNav: false,
             itemMargin: 10,
             maxItems: 6,
@@ -233,7 +465,7 @@ jQuery.noConflict();
 
         jQuery(".galleryCarasole").flexslider({
             animation: "slide",
-            animationLoop: false,
+            animationLoop: true,
             controlNav: false,
             itemWidth: 200,
             itemMargin: 20,
@@ -242,7 +474,7 @@ jQuery.noConflict();
         jQuery(".galleryCarousel8").flexslider({
             animation: "slide",
             controlNav: false,
-            animationLoop: false,
+            animationLoop: true,
             slideshow: false,
             direction: "vertical",
         });
@@ -250,7 +482,7 @@ jQuery.noConflict();
         jQuery(".galleryCarousel9").flexslider({
             animation: "slide",
             controlNav: false,
-            animationLoop: false,
+            animationLoop: true,
             slideshow: false,
             itemWidth: 150,
             itemMargin: 5,
@@ -275,35 +507,237 @@ jQuery.noConflict();
         jQuery("#slider").flexslider({
             animation: "slide",
             controlNav: false,
-            animationLoop: false,
+            animationLoop: true,
             slideshow: false,
             sync: "#carousel",
         });
 
-        jQuery(".fancybox").fancybox({
+
+        // jQuery(".fancybox").fancybox({
+        // beforeShow: function () {
+        //     if (this.title) this.title += "<br/>";
+        //     if (jQuery(this.element).parents(".fancyShare").length > 0) {
+        //     this.title += jQuery(this.element)
+        //         .parents(".fancyShare")
+        //         .find(".hide.fancySocial")
+        //         .html();
+        //     }
+        // },
+        // helpers: {
+        //     title: { type: "inside" }
+        // },
+        // afterShow: function () {
+        //     var $modal = jQuery(".fancybox-wrap:visible");
+        //     var $focusable = $modal.find(`
+        //     a[href], area[href], input:not([disabled]):not([type="hidden"]),
+        //     select:not([disabled]), textarea:not([disabled]),
+        //     button:not([disabled]), iframe, object, embed,
+        //     [tabindex]:not([tabindex="-1"]), [contenteditable]
+        //     `).filter(':visible');
+
+        //     if ($focusable.length) {
+        //     setTimeout(() => $focusable.first().focus(), 1); // delay for browser rendering
+        //     } else {
+        //     $modal.attr('tabindex', '-1').focus();
+        //     }
+
+        //     // Trap focus
+        //     $(document).off('keydown.fancybox-trap').on('keydown.fancybox-trap', function (e) {
+        //     if (e.key === 'Tab' || e.keyCode === 9) {
+        //         const isShift = e.shiftKey;
+        //         const firstEl = $focusable[0];
+        //         const lastEl = $focusable[$focusable.length - 1];
+        //         const active = document.activeElement;
+
+        //         if (isShift && active === firstEl) {
+        //         e.preventDefault();
+        //         lastEl.focus();
+        //         } else if (!isShift && active === lastEl) {
+        //         e.preventDefault();
+        //         firstEl.focus();
+        //         }
+        //     }
+
+        //     if (e.key === 'Escape' || e.keyCode === 27) {
+        //         $('.fancybox-close:visible').trigger('click');
+        //     }
+        //     });
+        // },
+        // afterClose: function () {
+        //     jQuery(this.element).focus(); // Return focus
+        //     $(document).off('keydown.fancybox-trap');
+        // }
+        // });
+
+
+
+        // Fancybox Accessibility js start
+        let lastNavAction = null;
+
+        /* Enhanced arrow + activation handling */
+        $(document).on('keydown', '.fancybox-next, .fancybox-prev', function(e) {
+
+            const isNext = $(this).hasClass('fancybox-next');
+            const isPrev = $(this).hasClass('fancybox-prev');
+
+            const isEnter = e.key === 'Enter' || e.keyCode === 13;
+            const isSpace = e.key === ' ' || e.key === 'Spacebar' || e.keyCode === 32;
+            const isRight = e.key === 'ArrowRight' || e.keyCode === 39;
+            const isLeft = e.key === 'ArrowLeft' || e.keyCode === 37;
+
+            /* ENTER / SPACE activation */
+            if (isEnter || isSpace) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                lastNavAction = isNext ? 'next' : 'prev';
+                isNext ? $.fancybox.next() : $.fancybox.prev();
+                return;
+            }
+
+            /* RIGHT ARROW = NEXT */
+            if (isRight) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                lastNavAction = 'next';
+                $.fancybox.next();
+                return;
+            }
+
+            /* LEFT ARROW = PREVIOUS */
+            if (isLeft) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                lastNavAction = 'prev';
+                $.fancybox.prev();
+                return;
+            }
+        });
+
+        /* Controlled Arrow navigation (only when modal is open) */
+        $(document).on('keydown', function(e) {
+            if (!$('.fancybox-wrap:visible').length) return;
+
+            if (e.key === 'ArrowRight' || e.keyCode === 39) {
+                e.preventDefault();
+                lastNavAction = 'next';
+                $.fancybox.next();
+            }
+
+            if (e.key === 'ArrowLeft' || e.keyCode === 37) {
+                e.preventDefault();
+                lastNavAction = 'prev';
+                $.fancybox.prev();
+            }
+        });
+
+        $(".fancybox").fancybox({
+
             beforeShow: function() {
-                if (this.title) {
-                    this.title += "<br/>";
-                }
-                if (jQuery(this.element).parents(".fancyShare").length > 0) {
-                    this.title += jQuery(this.element)
+                if (this.title) this.title += "<br/>";
+
+                if ($(this.element).parents(".fancyShare").length > 0) {
+                    this.title += $(this.element)
                         .parents(".fancyShare")
                         .find(".hide.fancySocial")
                         .html();
                 }
             },
+
             helpers: {
                 title: {
-                    type: "inside",
-                },
+                    type: "inside"
+                }
             },
+
             afterShow: function() {
-                jQuery(".fancybox-skin").attr("tabindex", -1).focus();
+
+                var $currentLink = $(this.element);
+                var simpleTitleText = $currentLink.data('simple-title');
+                var titleID = 'modal-title-' + this.index;
+
+                var $titleElement = $('.fancybox-title');
+                if ($titleElement.length && simpleTitleText) {
+                    $titleElement
+                        .html('<span class="child">' + simpleTitleText + '</span>')
+                        .attr('id', titleID);
+                }
+
+                $('.fancybox-wrap').attr('aria-labelledby', titleID);
+
+                var $modal = $('.fancybox-wrap:visible');
+
+                setTimeout(() => {
+
+                    var $focusable = $modal.find(`
+                a[href], area[href],
+                input:not([disabled]):not([type="hidden"]),
+                select:not([disabled]),
+                textarea:not([disabled]),
+                button:not([disabled]),
+                [tabindex]:not([tabindex="-1"])
+            `).filter(':visible');
+
+                    if (lastNavAction === 'next') {
+                        $('.fancybox-next:visible').focus();
+                    } else if (lastNavAction === 'prev') {
+                        $('.fancybox-prev:visible').focus();
+                    } else if ($focusable.length) {
+                        $focusable.first().focus();
+                    } else {
+                        $modal.attr('tabindex', '-1').focus();
+                    }
+
+                    lastNavAction = null;
+
+                    /* Focus trap */
+                    $(document)
+                        .off('keydown.fancybox-trap')
+                        .on('keydown.fancybox-trap', function(e) {
+
+                            if (e.key === 'Tab' || e.keyCode === 9) {
+
+                                var $focusable = $modal.find(`
+                    a[href], area[href],
+                    input:not([disabled]):not([type="hidden"]),
+                    select:not([disabled]),
+                    textarea:not([disabled]),
+                    button:not([disabled]),
+                    [tabindex]:not([tabindex="-1"])
+                    `).filter(':visible');
+
+                                if (!$focusable.length) return;
+
+                                var first = $focusable[0];
+                                var last = $focusable[$focusable.length - 1];
+
+                                if (e.shiftKey && document.activeElement === first) {
+                                    e.preventDefault();
+                                    last.focus();
+                                } else if (!e.shiftKey && document.activeElement === last) {
+                                    e.preventDefault();
+                                    first.focus();
+                                }
+                            }
+
+                            if (e.key === 'Escape' || e.keyCode === 27) {
+                                $('.fancybox-close:visible').trigger('click');
+                            }
+                        });
+
+                }, 0);
             },
+
             afterClose: function() {
-                jQuery(this.element).focus();
-            },
+                $('.fancybox-wrap, .fancybox-title').removeAttr('aria-labelledby id');
+                $(this.element).focus();
+                $(document).off('keydown.fancybox-trap');
+                lastNavAction = null;
+            }
         });
+        // Fancybox Accessibility js ends
 
         jQuery("img.svg").each(function() {
                 var e = jQuery(this),
@@ -323,7 +757,7 @@ jQuery.noConflict();
                     "xml"
                 );
             }),
-            addFocusClass(),
+            // addFocusClass(),
             jQuery(".various").fancybox({
                 maxWidth: 800,
                 maxHeight: 600,
@@ -434,7 +868,7 @@ jQuery.noConflict();
             );
         });
 
-        addFocusClass();
+        // addFocusClass();
 
         //$('.appendedemblemList').remove();
 
@@ -454,7 +888,7 @@ jQuery.noConflict();
         jQuery(".HomeGalleryCarasole.single-page-gallery").flexslider({
             animation: "slide",
             controlNav: false,
-            animationLoop: false,
+            animationLoop: true,
             slideshow: false,
             itemWidth: 252,
             minItems: getGridSize(),

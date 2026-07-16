@@ -58,16 +58,18 @@ jQuery(document).ready(function($) {
     jQuery(".HomeGalleryCarasole").flexslider({
         animation: "slide",
         controlNav: false,
-        animationLoop: false,
+        animationLoop: true,
         slideshow: false,
-        itemWidth: 200
+        itemWidth: 200,
+        animationLoop: true
     });
     jQuery("#HomeVideoCarasole").flexslider({
         animation: "slide",
         controlNav: false,
-        animationLoop: false,
+        animationLoop: true,
         slideshow: false,
-        itemWidth: 200
+        itemWidth: 200,
+        animationLoop: true
     });
 
 

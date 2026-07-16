@@ -149,20 +149,22 @@
 
 .news-ticker-horizontal .flexslider .flex-direction-nav li a.flex-prev {
     left: auto;
-    right: -20px;
+    right: -18px;
 }
 
 .news-ticker-horizontal .flexslider .flex-direction-nav .flex-next,
 .news-ticker-horizontal .flexslider:hover .flex-direction-nav .flex-next {
-    right: -55px;
+    right: -61px;
 }
 
 .news-ticker-horizontal .flexslider .flex-pauseplay a {
-    height: 17px !important;
+    height: 15px !important;
+    width: 15px;
+    padding: 0 0 0 2px;
 }
 
 .news-ticker-horizontal .flexslider .flex-pauseplay a {
-    bottom: 0;
+    bottom: 2px;
     right: 12px;
 }
 

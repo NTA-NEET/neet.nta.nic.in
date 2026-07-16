@@ -29,7 +29,7 @@
             return g(e, t) + "px"
         };
     n.extend(s, {
-        version: "2.1.5",
+        version: "",
         defaults: {
             padding: 15,
             margin: 20,

@@ -613,17 +613,21 @@ body.compensate-for-scrollbar {
       visibility: visible;
     }
 
-    .fancybox-title{
-      .socialBox{
-        ul{
-
-          li{
-            display: inline-block;
-            margin: 0 5px 0 0;
-            a{
-              display: block;
-            }
+ .fancybox-title {
+  .socialBox {
+    ul {
+      li {
+        display: inline-block;
+        margin: 0 5px 0 0;
+        a {
+          display: block;
+          img.icon-twitter, .share-on-x {
+            width: 12px;
+            vertical-align: middle;
+            margin-bottom: 4px;
           }
         }
       }
     }
+  }
+}

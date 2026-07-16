@@ -144,12 +144,12 @@ ol li{
       a.mobile-show, .mobile-show{ display:inherit;}
       .accessiblelinks{ 
         display: none; position: absolute; width: 45px; background: #fff; left: 0; z-index: 9; padding:0 !important; border: 1px solid #d8d8d8; border-top: none;
-        ul li{ margin: 0 !important; float: none !important; width: 100% !important;}
+        // ul li{ margin: 0 !important; float: none !important; width: 100% !important;}
         ul li a{ padding:7px 0 !important; width:100%; border:none !important; border-bottom:1px solid #d8d8d8 !important; border-radius:0;}
-        ul li.highContrast.dark a,
-        ul li.highContrast.light a { display: inline-block; width: 33px; height: 27px; line-height: 22px; border: 2px solid #fff !important; margin: 5px 0; padding: 0 !important; font-size: 14px;}
-        ul li.highContrast.dark{ background-color:#000;}
-        ul li.highContrast.light a{ border-color:#000 !important;}
+        // ul li.highContrast.dark a,
+        // ul li.highContrast.light a { display: inline-block; width: 33px; height: 27px; line-height: 22px; border: 2px solid #fff !important; margin: 5px 0; padding: 0 !important; font-size: 14px;}
+        // ul li.highContrast.dark{ background-color:#000;}
+        // ul li.highContrast.light a{ border-color:#000 !important;}
       }
     }
   }
@@ -199,14 +199,16 @@ ol li{
   @media screen and (max-width: 940px){
     #topBar{ 
       #accessibility .accessiblelinks{ background: #000;}
-      #accessibility .accessiblelinks ul li.highContrast.dark{ background-color:#000; border-bottom: 1px solid;}
-      #accessibility .accessiblelinks ul li.highContrast.dark a{ border-color: #696969 !important;}
-      #accessibility ul li .accessiblelinks ul li.highContrast.light a, 
+      #accessibility .accessiblelinks ul li.highContrast.dark{ background-color:#000; 
+        // border-bottom: 1px solid;
+      }
+      #accessibility .accessiblelinks ul li.highContrast.dark a{ border:1px solid #696969 !important;}
+      #accessibility ul li .accessiblelinks ul li a, 
       #accessibility ul li .accessiblelinks ul li.highContrast.light a { 
-        border-color: #fff !important;
-        background: #000 !important;
+        border: 1px solid #696969 !important;
+        // background: #000 !important;
         span{
-          color: #fff !important;
+          color: #ff0 !important;
         }
       }
     }

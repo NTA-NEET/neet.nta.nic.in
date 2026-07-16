@@ -144,5 +144,414 @@ jQuery(document).ready(function() {
     }
 
 
+    // Highlisht links
+    jQuery("#highlightLinks").click(function(e) {
+        e.preventDefault();
+        jQuery("body").toggleClass("highlightLinks");
+
+        if (jQuery("body").hasClass("highlightLinks")) {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "highlightLinks" +
+                "=" +
+                1 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+            if (!window.location.origin) {
+                window.location.origin =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : "");
+                var site_temp_uri = window.location.origin;
+            } else {
+                var site_temp_uri = document.location.origin;
+            }
+        } else {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "highlightLinks" +
+                "=" +
+                0 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+        }
+    });
+
+    if (getCookie("highlightLinks") == "1") {
+        if (!window.location.origin) {
+            window.location.origin =
+                window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : "");
+            var site_temp_uri = window.location.origin;
+        } else {
+            var site_temp_uri = document.location.origin;
+        }
+        jQuery("body").addClass("highlightLinks");
+    }
+
+    if (getCookie("highlightLinks") == "0") {
+        jQuery("body").removeClass("highlightLinks");
+    }
+
+    // Text spacing
+    jQuery("#addletterspacing").click(function(e) {
+        e.preventDefault();
+        jQuery("body").toggleClass("addletterspacing");
+
+        if (jQuery("body").hasClass("addletterspacing")) {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "addletterspacing" +
+                "=" +
+                1 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+            if (!window.location.origin) {
+                window.location.origin =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : "");
+                var site_temp_uri = window.location.origin;
+            } else {
+                var site_temp_uri = document.location.origin;
+            }
+        } else {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "addletterspacing" +
+                "=" +
+                0 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+        }
+    });
+
+    if (getCookie("addletterspacing") == "1") {
+        if (!window.location.origin) {
+            window.location.origin =
+                window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : "");
+            var site_temp_uri = window.location.origin;
+        } else {
+            var site_temp_uri = document.location.origin;
+        }
+        jQuery("body").addClass("addletterspacing");
+    }
+
+    if (getCookie("addletterspacing") == "0") {
+        jQuery("body").removeClass("addletterspacing");
+    }
+
+    // Text lineheight
+    jQuery("#addlineheight").click(function(e) {
+        e.preventDefault();
+        jQuery("body").toggleClass("addlineheight");
+
+        if (jQuery("body").hasClass("addlineheight")) {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "addlineheight" +
+                "=" +
+                1 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+            if (!window.location.origin) {
+                window.location.origin =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : "");
+                var site_temp_uri = window.location.origin;
+            } else {
+                var site_temp_uri = document.location.origin;
+            }
+        } else {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "addlineheight" +
+                "=" +
+                0 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+        }
+    });
+
+    if (getCookie("addlineheight") == "1") {
+        if (!window.location.origin) {
+            window.location.origin =
+                window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : "");
+            var site_temp_uri = window.location.origin;
+        } else {
+            var site_temp_uri = document.location.origin;
+        }
+        jQuery("body").addClass("addlineheight");
+    }
+
+    if (getCookie("addlineheight") == "0") {
+        jQuery("body").removeClass("addlineheight");
+    }
+
+    // Invert
+    jQuery("#invert").click(function(e) {
+        e.preventDefault();
+        jQuery("body").toggleClass("invert");
+
+        if (jQuery("body").hasClass("invert")) {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "invert" +
+                "=" +
+                1 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+            if (!window.location.origin) {
+                window.location.origin =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : "");
+                var site_temp_uri = window.location.origin;
+            } else {
+                var site_temp_uri = document.location.origin;
+            }
+        } else {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "invert" +
+                "=" +
+                0 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+        }
+    });
+
+    if (getCookie("invert") == "1") {
+        if (!window.location.origin) {
+            window.location.origin =
+                window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : "");
+            var site_temp_uri = window.location.origin;
+        } else {
+            var site_temp_uri = document.location.origin;
+        }
+        jQuery("body").addClass("invert");
+    }
+
+    if (getCookie("invert") == "0") {
+        jQuery("body").removeClass("invert");
+    }
+
+    // Saturation
+    jQuery("#saturation").click(function(e) {
+        e.preventDefault();
+        jQuery("body").toggleClass("saturation");
+
+        if (jQuery("body").hasClass("saturation")) {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "saturation" +
+                "=" +
+                1 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+            if (!window.location.origin) {
+                window.location.origin =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : "");
+                var site_temp_uri = window.location.origin;
+            } else {
+                var site_temp_uri = document.location.origin;
+            }
+        } else {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "saturation" +
+                "=" +
+                0 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+        }
+    });
+
+    if (getCookie("saturation") == "1") {
+        if (!window.location.origin) {
+            window.location.origin =
+                window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : "");
+            var site_temp_uri = window.location.origin;
+        } else {
+            var site_temp_uri = document.location.origin;
+        }
+        jQuery("body").addClass("saturation");
+    }
+
+    if (getCookie("saturation") == "0") {
+        jQuery("body").removeClass("saturation");
+    }
+
+
+
+    // Hideimage
+    jQuery("#hideimage").click(function(e) {
+        e.preventDefault();
+        jQuery("body").toggleClass("hideimage");
+
+        if (jQuery("body").hasClass("hideimage")) {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "hideimage" +
+                "=" +
+                1 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+            if (!window.location.origin) {
+                window.location.origin =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : "");
+                var site_temp_uri = window.location.origin;
+            } else {
+                var site_temp_uri = document.location.origin;
+            }
+        } else {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "hideimage" +
+                "=" +
+                0 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+        }
+    });
+
+    if (getCookie("hideimage") == "1") {
+        if (!window.location.origin) {
+            window.location.origin =
+                window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : "");
+            var site_temp_uri = window.location.origin;
+        } else {
+            var site_temp_uri = document.location.origin;
+        }
+        jQuery("body").addClass("hideimage");
+    }
+
+    if (getCookie("hideimage") == "0") {
+        jQuery("body").removeClass("hideimage");
+    }
+
+    // Big Cursor
+    jQuery("#big_cursor").click(function(e) {
+        e.preventDefault();
+        jQuery("body").toggleClass("big_cursor");
+
+        if (jQuery("body").hasClass("big_cursor")) {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "big_cursor" +
+                "=" +
+                1 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+            if (!window.location.origin) {
+                window.location.origin =
+                    window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : "");
+                var site_temp_uri = window.location.origin;
+            } else {
+                var site_temp_uri = document.location.origin;
+            }
+        } else {
+            var thirtyDays = 1000 * 60 * 60 * 24 * 30;
+            var expireDate = new Date(new Date().valueOf() + thirtyDays);
+
+            document.cookie =
+                "big_cursor" +
+                "=" +
+                0 +
+                "; expires=" +
+                expireDate.toGMTString() +
+                "; path=/";
+        }
+    });
+
+    if (getCookie("big_cursor") == "1") {
+        if (!window.location.origin) {
+            window.location.origin =
+                window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : "");
+            var site_temp_uri = window.location.origin;
+        } else {
+            var site_temp_uri = document.location.origin;
+        }
+        jQuery("body").addClass("big_cursor");
+    }
+
+    if (getCookie("big_cursor") == "0") {
+        jQuery("body").removeClass("big_cursor");
+    }
+
+
 
 });

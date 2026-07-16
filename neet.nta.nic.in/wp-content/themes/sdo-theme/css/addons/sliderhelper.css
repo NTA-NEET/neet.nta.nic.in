@@ -708,4 +708,11 @@ only screen and (min-device-pixel-ratio: 1.5) {
     display: block;
 }
 
+.fancybox-title .socialBox ul li a img.icon-twitter,
+.fancybox-title .socialBox ul li a .share-on-x {
+    width: 12px;
+    vertical-align: middle;
+    margin-bottom: 4px;
+}
+
 /*# sourceMappingURL=sliderhelper.css.map */

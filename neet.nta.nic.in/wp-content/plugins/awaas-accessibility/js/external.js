@@ -1,18 +1,18 @@
 jQuery(window).load(function() {
     // Menu expandable accessibility
-    jQuery(".menu").find('[aria-haspopup=true]').attr('aria-expanded', 'false');
-    jQuery(".menu").find('[aria-haspopup=true]').hover(function() {
-        jQuery(this).attr('aria-expanded', 'true');
-    }, function() {
-        jQuery(this).attr('aria-expanded', 'false');
-    });
+    // jQuery(".menu").find('[aria-haspopup=true]').attr('aria-expanded', 'false');
+    // jQuery(".menu").find('[aria-haspopup=true]').hover(function () {
+    //     jQuery(this).attr('aria-expanded', 'true');
+    // }, function () {
+    //     jQuery(this).attr('aria-expanded', 'false');
+    // });
 
-    jQuery("#overflowMenu").find('.menu-item-has-children').attr('aria-expanded', 'false');
-    jQuery("#overflowMenu").find('.menu-item-has-children').hover(function() {
-        jQuery(this).attr('aria-expanded', 'true');
-    }, function() {
-        jQuery(this).attr('aria-expanded', 'false');
-    });
+    // jQuery("#overflowMenu").find('.menu-item-has-children').attr('aria-expanded', 'false');
+    // jQuery("#overflowMenu").find('.menu-item-has-children').hover(function () {
+    //     jQuery(this).attr('aria-expanded', 'true');
+    // }, function () {
+    //     jQuery(this).attr('aria-expanded', 'false');
+    // });
 
 });
 
@@ -27,9 +27,9 @@ jQuery(document).ready(function($) {
                 }
 
                 if (jQuery(this).parents('.wpb_column').next('div').length === 0) {
-                    if (jQuery(this).parents('.vc_row').next('div').length === 0) {
-                        jQuery('.footerMenu').find(':focusable').eq(0).focus();
-                    }
+                    // if (jQuery(this).parents('.vc_row').next('div').length === 0) {
+                    //     jQuery('.footerMenu').find(':focusable').eq(0).focus();
+                    // }
                     if (jQuery(this).parents('.vc_row').next('div').length === 1) {
                         jQuery(this).parents('.vc_row').next('div').find('a:first').focus();
                     }
@@ -41,24 +41,24 @@ jQuery(document).ready(function($) {
 
     //jQuery('body').addClass('show-focus-outlines');
     document.addEventListener('keydown', function(e) {
-        if (e.keyCode === 9) {
-            jQuery(".menu").find('[aria-haspopup=true]').focusin(function() {
-                jQuery(this).attr('aria-expanded', 'true');
-            });
-            jQuery(".menu").find('[aria-haspopup=true]').focusout(function() {
-                jQuery(this).attr('aria-expanded', 'false');
-            });
+        // if (e.keyCode === 9) {
+        //     jQuery(".menu").find('[aria-haspopup=true]').focusin(function () {
+        //         jQuery(this).attr('aria-expanded', 'true');
+        //     });
+        //     jQuery(".menu").find('[aria-haspopup=true]').focusout(function () {
+        //         jQuery(this).attr('aria-expanded', 'false');
+        //     });
 
-            jQuery("#overflowMenu").find('.menu-item-has-children').focusin(function() {
-                jQuery(this).attr('aria-expanded', 'true');
-            });
-            jQuery("#overflowMenu").find('.menu-item-has-children').focusout(function() {
-                jQuery(this).attr('aria-expanded', 'false');
-            });
+        //     jQuery("#overflowMenu").find('.menu-item-has-children').focusin(function () {
+        //         jQuery(this).attr('aria-expanded', 'true');
+        //     });
+        //     jQuery("#overflowMenu").find('.menu-item-has-children').focusout(function () {
+        //         jQuery(this).attr('aria-expanded', 'false');
+        //     });
 
-            jQuery('body').addClass('show-focus-outlines');
+        //     jQuery('body').addClass('show-focus-outlines');
 
-        }
+        // }
 
     });
 
@@ -131,6 +131,7 @@ jQuery(document).ready(function($) {
     jQuery('.vc_tta-tabs-list').attr('role', 'tablist');
     jQuery('.vc_tta-panel').attr('role', 'tabpanel');
     jQuery('.vc_tta-tab a').attr('role', 'tab');
+
 
     //Parmod code start
     jQuery(".vc_tta-panels .vc_active").siblings().attr("hidden", true);
@@ -283,10 +284,3 @@ jQuery(document).ready(function($) {
     //VC Tabs keyboard accessibility end
 
 });
-
-//Login outh page change
-/*
-jQuery(document).ready(function(){
-    jQuery(".adlogin-cntr").parents().siblings('.switchViewHead').css({"text-align": "center", "padding-left": "8.3333%"}).find('h1').text('Login to:');
-    jQuery(".logout-auth").parents().siblings('.switchViewHead').css({"text-align": "center", "padding-left": "8.3333%"}).find('h1').text('Logout Oauth:');
-});*/
